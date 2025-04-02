@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\arbetstest_murwan.props" />
+</Project>
