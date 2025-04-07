@@ -5,10 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using arbetstest_murwan.Services;
 using arbetstest_murwan.Services.Imp;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 
 namespace arbetstest_murwan.Controllers
 {
+    /// <summary>
+    /// Controller for handling Modbus device operations including reading values, 
+    /// synchronizing with Modbus devices, and managing device states.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ModbusController : ControllerBase
@@ -18,9 +22,10 @@ namespace arbetstest_murwan.Controllers
         private readonly IModbusService _modbusService;
 
         /// <summary>
-        /// Initializes a new instance of the ModbusValuesController
+        /// Initializes a new instance of the ModbusController
         /// </summary>
-        /// <param name="context">Database context</param>
+        /// <param name="context">Database context for accessing Modbus values</param>
+        /// <param name="modbusService">Service for Modbus device operations</param>
         public ModbusController(ApplicationDbContext context, IModbusService modbusService)
         {
             _context = context;
@@ -37,13 +42,21 @@ namespace arbetstest_murwan.Controllers
             return await _context.ModbusValues.ToListAsync();
         }
 
+        /// <summary>
+        /// Reads coil values from Modbus devices
+        /// </summary>
+        /// <returns>Coil values from the Modbus devices</returns>
         [HttpGet("read")]
         public async Task<IActionResult> ReadCoils()
         {
-            var result = await _modbusService.ReadCoilsAsync(0,3); // reads coils 0–9
+            var result = await _modbusService.ReadCoilsAsync(0,3); // reads coils 0–2
             return Ok(result);
         }
 
+        /// <summary>
+        /// Synchronizes coil values from Modbus devices to the database
+        /// </summary>
+        /// <returns>Confirmation message when sync is complete</returns>
         [HttpPost("sync")]
         public async Task<IActionResult> SyncFromModbus()
         {
@@ -51,6 +64,10 @@ namespace arbetstest_murwan.Controllers
             return Ok("Synced Modbus coils to DB");
         }
 
+        /// <summary>
+        /// Retrieves all Modbus devices from the database
+        /// </summary>
+        /// <returns>List of all Modbus devices</returns>
         [HttpGet("devices")]
         public async Task<IActionResult> GetAllDevices()
         {

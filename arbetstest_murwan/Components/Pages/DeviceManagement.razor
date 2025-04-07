@@ -1,4 +1,10 @@
-﻿@page "/device-management"
+﻿@* 
+    Component: DeviceManagement
+    Description: Provides a management interface for Modbus devices.
+    Displays all registered devices and allows administrators to delete devices from the system.
+    Route: /device-management
+*@
+@page "/device-management"
 
 @using arbetstest_murwan.Models
 @inject HttpClient HttpClient
@@ -40,6 +46,13 @@ else
 @code {
     private List<ModbusValue>? devices;
 
+    /// <summary>
+    /// Initializes the component by loading the device list from the API
+    /// </summary>
+    /// <remarks>
+    /// Makes a GET request to 'api/Modbus/devices' endpoint to fetch all registered devices.
+    /// Handles any exceptions that occur during the API call.
+    /// </remarks>
     protected override async Task OnInitializedAsync()
     {
         try
@@ -52,6 +65,15 @@ else
         }
     }
 
+    /// <summary>
+    /// Deletes a device from the system
+    /// </summary>
+    /// <param name="id">The ID of the device to delete</param>
+    /// <remarks>
+    /// Makes a DELETE request to 'api/Modbus/devices/{id}' endpoint.
+    /// On success, removes the device from the local list.
+    /// Handles both API errors and exceptions.
+    /// </remarks>
     private async Task DeleteDevice(int id)
     {
         try

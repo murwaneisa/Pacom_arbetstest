@@ -1,4 +1,9 @@
-﻿@page "/"
+﻿@* 
+    Component: Home
+    Description: The main dashboard page that displays and manages Modbus devices.
+    Provides functionality to sync devices with the Modbus server and toggle individual device states.
+*@
+@page "/"
 
 @inject HttpClient HttpClient
 @inject ILogger<Home> Logger
@@ -34,6 +39,9 @@ else
 @code {
     private List<ModbusValue>? devices;
 
+    /// <summary>
+    /// Synchronizes device states with the Modbus server and refreshes the device list
+    /// </summary>
     private async Task SyncDevices()
     {
         Logger.LogInformation("Syncing Modbus coils to DB...");
@@ -50,12 +58,19 @@ else
         }
     }
 
+    /// <summary>
+    /// Initializes the component by loading the device list from the API
+    /// </summary>
     protected override async Task OnInitializedAsync()
     {
         Logger.LogInformation("OnInitializedAsync triggered.");
         devices = await HttpClient.GetFromJsonAsync<List<ModbusValue>>("api/Modbus/devices");
     }
 
+    /// <summary>
+    /// Handles toggling a device's state and updates the UI accordingly
+    /// </summary>
+    /// <param name="device">The Modbus device to toggle</param>
     private async Task ToggleDevice(ModbusValue device)
     {
         Logger.LogInformation("Toggling device: {DeviceId}", device.Id);
@@ -72,6 +87,4 @@ else
             Logger.LogWarning("Failed to toggle device {DeviceId}: {StatusCode}", device.Id, response.StatusCode);
         }
     }
-
-
 }

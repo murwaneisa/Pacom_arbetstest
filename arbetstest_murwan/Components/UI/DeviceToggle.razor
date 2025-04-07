@@ -1,10 +1,12 @@
-﻿@* DeviceToggle.razor *@
-
+﻿@* 
+    Component: DeviceToggle
+    Description: A Blazor component that displays a Modbus device card with toggle functionality.
+    Displays device information including name, status, and last updated time, with a toggle button to change the device state.
+*@
 @using System.Globalization
 @using arbetstest_murwan.Models
 @using Microsoft.AspNetCore.Components
 @rendermode InteractiveServer
-
 
 <div class="card shadow-sm mb-3">
     <div class="card-body">
@@ -35,14 +37,24 @@
 </div>
 
 @code {
-    [Parameter] public ModbusValue Device { get; set; } = default!;
-    [Parameter] public EventCallback<ModbusValue> OnToggle { get; set; }
-   
+    /// <summary>
+    /// Gets or sets the Modbus device data to display
+    /// </summary>
+    [Parameter]
+    public ModbusValue Device { get; set; } = default!;
 
+    /// <summary>
+    /// Event callback invoked when the toggle button is clicked
+    /// </summary>
+    [Parameter]
+    public EventCallback<ModbusValue> OnToggle { get; set; }
+
+    /// <summary>
+    /// Handles the toggle button click event and invokes the OnToggle callback
+    /// </summary>
     private async Task Toggle()
     {
         Console.WriteLine($"[DeviceToggle] Toggle clicked for {Device.Name}");
         await OnToggle.InvokeAsync(Device);
     }
 }
-
