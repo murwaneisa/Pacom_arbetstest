@@ -2644,7 +2644,6 @@
       "arbetstest_murwan/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.3",
-          "Moq": "4.20.72",
           "NModbus4.NetCore": "3.0.0",
           "Swashbuckle.AspNetCore": "8.1.0"
         },

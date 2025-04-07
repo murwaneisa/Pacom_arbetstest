@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("arbetstest_murwan.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+36080c4b88b5687f77b162128078b740ada286b0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+449a6779ddd6d44545f788465e4a3c7c0663e9e7")]
 [assembly: System.Reflection.AssemblyProductAttribute("arbetstest_murwan.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("arbetstest_murwan.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

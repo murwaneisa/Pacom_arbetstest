@@ -12,6 +12,16 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddControllers();
 builder.Services.AddScoped<IModbusService, ModbusService>();
 
+builder.Services.AddScoped<HttpClient>(sp =>
+{
+    return new HttpClient
+    {
+        BaseAddress = new Uri("https://localhost:7073/")
+    };
+});
+
+
+
 // Register support for discovering minimal API endpoints (required for Swagger UI)
 builder.Services.AddEndpointsApiExplorer();
 
