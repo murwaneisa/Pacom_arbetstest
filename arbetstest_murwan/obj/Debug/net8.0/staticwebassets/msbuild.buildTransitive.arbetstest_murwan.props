@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\arbetstest_murwan.props" />
-</Project>
