@@ -1,0 +1,74 @@
+﻿@page "/device-management"
+
+@using arbetstest_murwan.Models
+@inject HttpClient HttpClient
+@inject ILogger<DeviceManagement> Logger
+@rendermode InteractiveServer
+
+<h3 class="text-center mb-4">Device Management</h3>
+
+@if (devices == null)
+{
+    <p>Loading devices...</p>
+}
+else if (!devices.Any())
+{
+    <p>No devices found.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var device in devices)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title mb-1">@device.Name</h5>
+                            <p class="card-text"><small class="text-muted">Address: @device.RegisterAddress</small></p>
+                        </div>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteDevice(device.Id)">
+                            <i class="bi bi-trash"></i> <!-- Bootstrap icon -->
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<ModbusValue>? devices;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            devices = await HttpClient.GetFromJsonAsync<List<ModbusValue>>("api/Modbus/devices");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading devices");
+        }
+    }
+
+    private async Task DeleteDevice(int id)
+    {
+        try
+        {
+            var response = await HttpClient.DeleteAsync($"api/Modbus/devices/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                devices = devices?.Where(d => d.Id != id).ToList();
+            }
+            else
+            {
+                Logger.LogWarning("Failed to delete device {DeviceId}: {StatusCode}", id, response.StatusCode);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error deleting device {DeviceId}", id);
+        }
+    }
+}

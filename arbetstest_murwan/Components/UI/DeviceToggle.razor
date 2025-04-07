@@ -1,0 +1,48 @@
+﻿@* DeviceToggle.razor *@
+
+@using System.Globalization
+@using arbetstest_murwan.Models
+@using Microsoft.AspNetCore.Components
+@rendermode InteractiveServer
+
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="card-title mb-0">@Device.Name</h5>
+            <span class="text-muted small">Coil Address: @Device.RegisterAddress</span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-semibold">Status:</span>
+            <span class="badge @(Device.IsOn ? "bg-success" : "bg-danger")">
+                @(Device.IsOn ? "ON" : "OFF")
+            </span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Last updated:</span>
+            <span class="text-muted">@Device.LastUpdated.ToString("g", CultureInfo.InvariantCulture)</span>
+        </div>
+
+        <button class="btn @(Device.IsOn ? "btn-outline-danger" : "btn-outline-success") w-100"
+                @onclick="Toggle"
+                aria-pressed="@Device.IsOn"
+                title="@($"Turn {(Device.IsOn ? "OFF" : "ON")} {Device.Name}")">
+            Toggle @(Device.IsOn ? "OFF" : "ON")
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public ModbusValue Device { get; set; } = default!;
+    [Parameter] public EventCallback<ModbusValue> OnToggle { get; set; }
+   
+
+    private async Task Toggle()
+    {
+        Console.WriteLine($"[DeviceToggle] Toggle clicked for {Device.Name}");
+        await OnToggle.InvokeAsync(Device);
+    }
+}
+
